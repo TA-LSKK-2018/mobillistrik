@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 var amqp = require('amqplib/callback_api');
-var vhost = 'amqp://localhost/mobilistrik';
+var vhost = 'amqp://localhost//mobillistrik';
 
 amqp.connect(vhost, function(err, conn) {
   conn.createChannel(function(err, ch) {
-    var q = 'sensor';
-	var routekey = 'mobilistrik.sensor';
-    var myObj = { suhu_batt1:27.8, suhu_batt2:26.1, suhu_motor:27.5, V_batt1:12.2 };
+    var q = 'dataSensor';
+	var routekey = 'mobillistrik.sensor';
+    var myObj = {"time":"0:25:6" , "date":"1/1/1970" , "lat":"0.000000" , "lon":"0.000000" , "suhu_bat1":"26.81" , "suhu_bat2":"27.75" , "suhu_motor":"27.56" , "v_batt":"3.42", "soc":"100", "arus_dc":"-4.22" , "arus_ac":"0.02" , "rpm_motor":"0" , "torsi_motor":"0.00", "id_ind":"1"};
 	var msg = JSON.stringify(myObj);
 
     ch.assertQueue(q, {durable: true});
