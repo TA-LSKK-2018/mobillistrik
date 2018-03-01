@@ -33,9 +33,8 @@ amqp.connect(vhost, function(err, conn) {
 	  id_ref += 1;
 	  
 	  for (var i = 0; i < myobj.length; i++) {
-				console.log(buffer[i]);
-				id_ref++;
-			}
+			console.log(buffer[i]);
+	  }
 	  	
 		//Connect to the database and insert consumed data as a document	
 		MongoClient.connect(url, function(err, db) {
