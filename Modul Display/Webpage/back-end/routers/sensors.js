@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const Sensor = require('../models/sensor');
 const config = require('../config/database');
 
-// CREATES A NEW USER
+/*// ADDS NEW SENSOR DATA
 router.post('/add', function (req, res) {
     Sensor.create({
             time : req.body.time,
@@ -27,17 +27,45 @@ router.post('/add', function (req, res) {
 			// you can add field as you wish here.
         }, 
         function (err, sensor) {
-            if (err) return res.status(500).send("There was a problem adding the information to the database.");
             res.status(200).send(sensor);
+            if (err) return res.status(500).send("There was a problem adding the information to the database.");
         });
 });
-
+*/
 
 // RETURNS ALL THE SENSOR IN THE DATABASE
-router.get('/getAllData', passport.authenticate('jwt',{session:false}), function (req, res, next) {
-    Sensor.find({}, function (err, sensors) {
-        if (err) return res.status(500).send("There was a problem finding the sensors.");
-        res.status(200).send(sensors);
+router.get('/getAllData', passport.authenticate('jwt',{session:false}), function (req, res, next) {  
+	/*var perPage = 5;
+	var page = req.params.page || 1;
+	var pages;
+	
+	Sensor.find({}).sort({_id: -1}).skip((perPage*page) - perPage).limit(perPage).exec(function (err, sensors) {
+         Sensor.count().exec(function(err, count) {
+            pages = Math.ceil(count / perPage);
+			if (err) return res.status(500).send("Error calculating pages.");
+			res.status(200).send(sensors);
+		});
+
+	*/	
+	
+	var page = req.query.page;
+	var size = req.query.size;
+	
+	Sensor.find({}).sort({_id: -1}).exec(function (err, sensors) {
+		if (err) return res.status(500).send("There was a problem finding the sensors.");
+		Sensor.count().exec(function(err, count) {
+				var arr = [];
+				var rowob = {};
+				var fld = "rows";
+				var num = count;
+				rowob[fld] = num;
+				arr.push(rowob);
+				
+				var data = sensors;
+				arr = arr.concat(data);
+	
+				res.status(200).send(arr);
+		});
     });
 });
 
