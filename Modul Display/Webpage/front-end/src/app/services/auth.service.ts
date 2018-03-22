@@ -31,11 +31,12 @@ export class AuthService {
     return this.http.get('http://localhost:3000/users/profile/'+this.user.id, {headers: headers}).map(res=> res.json());
   }
 
-    getSensor(){
+ getSensor(page, sze){
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
-    return this.http.get('http://localhost:3000/sensors/sensor/'+this.user.id, {headers: headers}).map(res=> res.json());
+	let strpar = '?page=' + page + '&size=' + sze;
+    return this.http.get('http://localhost:3000/sensors/getAllData' + strpar, {headers: headers}).map(res=> res.json());
   }
   
   storeUserData(token, user){
